@@ -171,9 +171,9 @@ function main()
     }
     `;
 
-    var redBack = [59, 54, 59, 60];
-    var greenBack = [28, 36, 46, 59];
-    var blueBack = [26, 26, 27, 29];
+    var redBack = [59, 54, 59, 42];
+    var greenBack = [28, 36, 46, 41];
+    var blueBack = [26, 26, 27, 24];
 
     var redFront = [243, 240, 241, 244];
     var greenFront = [17, 78, 135, 194];
@@ -198,29 +198,29 @@ function main()
             {
                 if(digitPosInd2)
                 {
-                    r = `+redBack[0]/255+`;
-                    g = `+greenBack[0]/255+`;
-                    b = `+blueBack[0]/255+`;
+                    r = `+redBack[3]/255+`;
+                    g = `+greenBack[3]/255+`;
+                    b = `+blueBack[3]/255+`;
                 }
                 else 
-                {
-                    r = `+redBack[1]/255+`;
-                    g = `+greenBack[1]/255+`;
-                    b = `+blueBack[1]/255+`;
-                }
-            }
-            else {
-                if(digitPosInd2)
                 {
                     r = `+redBack[2]/255+`;
                     g = `+greenBack[2]/255+`;
                     b = `+blueBack[2]/255+`;
                 }
+            }
+            else {
+                if(digitPosInd2)
+                {
+                    r = `+redBack[1]/255+`;
+                    g = `+greenBack[1]/255+`;
+                    b = `+blueBack[1]/255+`;
+                }
                 else
                 {
-                    r = `+redBack[3]/255+`;
-                    g = `+greenBack[3]/255+`;
-                    b = `+blueBack[3]/255+`;
+                    r = `+redBack[0]/255+`;
+                    g = `+greenBack[0]/255+`;
+                    b = `+blueBack[0]/255+`;
                 }
             }
         }
@@ -230,29 +230,29 @@ function main()
             {
                 if(digitPosInd2)
                 {
-                    r = `+redFront[0]/255+`;
-                    g = `+greenFront[0]/255+`;
-                    b = `+blueFront[0]/255+`;
+                    r = `+redFront[3]/255+`;
+                    g = `+greenFront[3]/255+`;
+                    b = `+blueFront[3]/255+`;
                 }
                 else 
-                {
-                    r = `+redFront[1]/255+`;
-                    g = `+greenFront[1]/255+`;
-                    b = `+blueFront[1]/255+`;
-                }
-            }
-            else {
-                if(digitPosInd2)
                 {
                     r = `+redFront[2]/255+`;
                     g = `+greenFront[2]/255+`;
                     b = `+blueFront[2]/255+`;
                 }
+            }
+            else {
+                if(digitPosInd2)
+                {
+                    r = `+redFront[1]/255+`;
+                    g = `+greenFront[1]/255+`;
+                    b = `+blueFront[1]/255+`;
+                }
                 else
                 {
-                    r = `+redFront[3]/255+`;
-                    g = `+greenFront[3]/255+`;
-                    b = `+blueFront[3]/255+`;
+                    r = `+redFront[0]/255+`;
+                    g = `+greenFront[0]/255+`;
+                    b = `+blueFront[0]/255+`;
                 }
             }
         }
@@ -311,7 +311,7 @@ function main()
                 {
                     for (let j = 0; j < 7; j++)
                     {
-                        if (j != 1 && j != 4) gl.drawArrays(gl.TRIANGLE_FAN, j*6, 6);
+                        if (j != 1 && j != 4) gl.drawArrays(gl.LINE_LOOP, j*6, 6);
                     }
                 }
                 else 
