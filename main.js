@@ -123,6 +123,42 @@ function main()
         -0.675, 0.65,
         -0.655, 0.6,
         -0.675, 0.55,
+
+        // middle half left horizontal bit
+        -0.605, -0.05,
+        -0.625, -0.1, 
+        -0.605, -0.15,
+
+        -0.5, -0.15,
+        -0.48, -0.1,
+        -0.5, -0.05,
+
+        // middle half right horizontal bit
+        -0.78, -0.05,
+        -0.8, -0.1, 
+        -0.78, -0.15,
+
+        -0.675, -0.15,
+        -0.655, -0.1,
+        -0.675, -0.05,
+
+        // bottom half left horizontal bit
+        -0.605, -0.75,
+        -0.625, -0.8, 
+        -0.605, -0.85,
+
+        -0.5, -0.85,
+        -0.48, -0.8,
+        -0.5, -0.75,
+
+        // bottom half right horizontal bit
+        -0.78, -0.75,
+        -0.8, -0.8, 
+        -0.78, -0.85,
+
+        -0.675, -0.85,
+        -0.655, -0.8,
+        -0.675, -0.75,
     ];
 
     // readjusting the position
@@ -131,13 +167,6 @@ function main()
 
     // jarak tiap digit
     var distance = 0.48;
-
-    // adding 3 other base
-    // 
-    // for (let i = 0; i < 3; i++)
-    // {
-    //     addBase(vertices, i, distance);
-    // }
 
     // pindahin vertices ke GPU dari CPU
     var buffer = gl.createBuffer();
@@ -300,9 +329,24 @@ function main()
 
             if(k == 0)
             {
-                for (let j = 0; j < 7; j++)
+                if (i >= 2 && i % 2 == 0)
                 {
-                    gl.drawArrays(gl.TRIANGLE_FAN, j*6, 6);
+                    for (let j = 0; j < 7; j++)
+                    {
+                        if (j != 0 && j != 3 && j != 6) gl.drawArrays(gl.TRIANGLE_FAN, j*6, 6);
+                    }
+
+                    for (let j = 9; j < 15; j++)
+                    {
+                        gl.drawArrays(gl.TRIANGLE_FAN, j*6, 6);
+                    }
+                }
+                else
+                {
+                    for (let j = 0; j < 7; j++)
+                    {
+                        gl.drawArrays(gl.TRIANGLE_FAN, j*6, 6);
+                    }
                 }
             }
             else 
