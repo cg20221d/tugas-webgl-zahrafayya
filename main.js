@@ -914,12 +914,12 @@ function main()
             // Digit 1
             if(horizontalDirection == 1)
             {
-                if(horizontalDelta < 0.15) horizontalDelta += horizontalSpeed;
+                if(horizontalDelta < 4.15) horizontalDelta += horizontalSpeed;
                 else horizontalDirection = -1;
             }
             else 
             {
-                if(horizontalDelta > -1.25) horizontalDelta -= horizontalSpeed;
+                if(horizontalDelta > -2.25) horizontalDelta -= horizontalSpeed;
                 else horizontalDirection = 1;
             }
 
