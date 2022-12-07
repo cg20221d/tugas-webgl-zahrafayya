@@ -1055,7 +1055,10 @@ function main()
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 1320);
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 1440);
                 }
+                
+
             }
+            gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 1500);
              // kecepatannya sama seperti clockspeed cpu
             render();
         }, 1000/60); // 60 fps
