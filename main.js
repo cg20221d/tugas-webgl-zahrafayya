@@ -629,35 +629,35 @@ function main()
         -0.675, -0.75, 0.85,    64/255, 123/255, 250/255,   0, 1, 0,    // Index 11 - 415
         
         // Face A       // Red      // Surface orientation
-        -1,  -1, -1,     1, 0, 0,    0, 0, -1,    // Index:  0    
-        -0.2, -1, -1,     1, 0, 0,    0, 0, -1,    // Index:  1
-        -0.2, -0.2, -1,     1, 0, 0,    0, 0, -1,    // Index:  2
-        -1,  -0.2, -1,     1, 0, 0,    0, 0, -1,    // Index:  3
+        -1,  -1, -1,            1, 1, 1,    0, 0, -1,    // Index:  0    
+        -0.2, -1, -1,           1, 1, 1,    0, 0, -1,    // Index:  1
+        -0.2, -0.2, -1,         1, 1, 1,    0, 0, -1,    // Index:  2
+        -1,  -0.2, -1,          1, 1, 1,    0, 0, -1,    // Index:  3
         // Face B       // Yellow
-        -1, -1,  -0.2,     1, 1, 0,    0, 0, 1,     // Index:  4
-        -0.2, -1,  -0.2,     1, 1, 0,    0, 0, 1,     // Index:  5
-        -0.2,  -0.2,  -0.2,     1, 1, 0,    0, 0, 1,     // Index:  6
-        -1,  -0.2,  -0.2,     1, 1, 0,    0, 0, 1,     // Index:  7
+        -1, -1,  -0.2,          1, 1, 1,    0, 0, 1,     // Index:  4
+        -0.2, -1,  -0.2,        1, 1, 1,    0, 0, 1,     // Index:  5
+        -0.2,  -0.2,  -0.2,     1, 1, 1,    0, 0, 1,     // Index:  6
+        -1,  -0.2,  -0.2,       1, 1, 1,    0, 0, 1,     // Index:  7
         // Face C       // Green
-        -1, -1, -1,     0, 1, 0,    -1, 0, 0,    // Index:  8
-        -1,  -0.2, -1,     0, 1, 0,    -1, 0, 0,    // Index:  9
-        -1,  -0.2,  -0.2,     0, 1, 0,    -1, 0, 0,    // Index: 10
-        -1, -1,  -0.2,     0, 1, 0,    -1, 0, 0,    // Index: 11
+        -1, -1, -1,             1, 1, 1,    -1, 0, 0,    // Index:  8
+        -1,  -0.2, -1,          1, 1, 1,    -1, 0, 0,    // Index:  9
+        -1,  -0.2,  -0.2,       1, 1, 1,    -1, 0, 0,    // Index: 10
+        -1, -1,  -0.2,          1, 1, 1,    -1, 0, 0,    // Index: 11
         // Face D       // Blue
-        -0.2, -1, -1,     0, 0, 1,    1, 0, 0,     // Index: 12
-        -0.2,  -0.2, -1,     0, 0, 1,    1, 0, 0,     // Index: 13
-        -0.2,  -0.2,  -0.2,     0, 0, 1,    1, 0, 0,     // Index: 14
-        -0.2, -1,  -0.2,     0, 0, 1,    1, 0, 0,     // Index: 15
+        -0.2, -1, -1,           1, 1, 1,    1, 0, 0,     // Index: 12
+        -0.2,  -0.2, -1,        1, 1, 1,    1, 0, 0,     // Index: 13
+        -0.2,  -0.2,  -0.2,     1, 1, 1,    1, 0, 0,     // Index: 14
+        -0.2, -1,  -0.2,        1, 1, 1,    1, 0, 0,     // Index: 15
         // Face E       // Orange
-        -1, -1, -1,     1, 0.5, 0,  0, -1, 0,    // Index: 16
-        -1, -1,  -0.2,     1, 0.5, 0,  0, -1, 0,    // Index: 17
-        -0.2, -1,  -0.2,     1, 0.5, 0,  0, -1, 0,    // Index: 18
-        -0.2, -1, -1,     1, 0.5, 0,  0, -1, 0,    // Index: 19
+        -1, -1, -1,             1, 1, 1,    0, -1, 0,    // Index: 16
+        -1, -1,  -0.2,          1, 1, 1,    0, -1, 0,    // Index: 17
+        -0.2, -1,  -0.2,        1, 1, 1,    0, -1, 0,    // Index: 18
+        -0.2, -1, -1,           1, 1, 1,    0, -1, 0,    // Index: 19
         // Face F       // White
-        -1,  -0.2, -1,     1, 1, 1,    0, 1, 0,     // Index: 20
-        -1,  -0.2,  -0.2,     1, 1, 1,    0, 1, 0,     // Index: 21
+        -1,  -0.2, -1,          1, 1, 1,    0, 1, 0,     // Index: 20
+        -1,  -0.2,  -0.2,       1, 1, 1,    0, 1, 0,     // Index: 21
         -0.2,  -0.2,  -0.2,     1, 1, 1,    0, 1, 0,     // Index: 22
-        -0.2,  -0.2, -1,     1, 1, 1,    0, 1, 0      // Index: 23
+        -0.2,  -0.2, -1,        1, 1, 1,    0, 1, 0      // Index: 23
     ];
 
     var indices = [
@@ -807,22 +807,24 @@ function main()
     varying vec3 vColor; 
     varying vec3 vNormal;
     varying vec3 vPosition;
+    varying float vModelID;
 
     void main()
     {
-        if (uModelID > 1.0){
+        if (uModelID > 1.0){ // I
             if(uModelID < 2.9)
                 gl_Position = uProjection * uView * uCube * vec4(aPosition.x + (${distance} * uModelID), aPosition.y, aPosition.z, 1.0);
             else 
                 gl_Position = uProjection * uView * uModel * vec4(aPosition.x + (${distance} * uModelID), aPosition.y, aPosition.z, 1.0);
         }
-        else 
+        else // 3
             gl_Position = uProjection * uView * uModel * vec4(aPosition.x + (${distance} * uModelID), aPosition.y, aPosition.z, 1.0);
 
 
         vColor = aColor;
         vNormal = aNormal;
         vPosition = (uModel * vec4(aPosition, 1.0)).xyz;
+        vModelID = uModelID;
     }
     `;
     var vertexShaderObject = gl.createShader(gl.VERTEX_SHADER);
@@ -835,6 +837,7 @@ function main()
     varying vec3 vColor;
     varying vec3 vNormal;
     varying vec3 vPosition;
+    varying float vModelID;
 
     uniform vec3 uLightConstant;
     uniform float uAmbientIntensity;
@@ -861,12 +864,28 @@ function main()
         float cosPhi = dot(normalizedReflector, normalizedViewer);
         vec3 specular = vec3(0.0, 0.0, 0.0);
         if (cosPhi > 0.0) {
-            float shininessConstant = 100.0;    // batas minimum spesifikasi spekular untuk materi logam
-            float specularIntensity = pow(cosPhi, shininessConstant);
-            specular = uLightConstant * specularIntensity;
+            if(vModelID > 1.0)
+            { // I
+                float shininessConstant = 120.0;    // batas minimum spesifikasi spekular untuk materi logam
+                float specularIntensity = pow(cosPhi, shininessConstant);
+                specular = uLightConstant * specularIntensity;
+            }   
+            else if(vModelID > 2.9)
+            { // 3
+                float shininessConstant = 7.0;    // batas minimum spesifikasi spekular untuk materi logam
+                float specularIntensity = pow(cosPhi, shininessConstant);
+                specular = uLightConstant * specularIntensity;
+            }     
         }
 
         vec3 phong = ambient + diffuse + specular;
+
+        if (vModelID > 1.0){
+            if(vModelID < 2.9){   
+                phong = uLightConstant * 1.0;
+            }
+        }   
+
         gl_FragColor = vec4(phong * vColor, 1.0);
     }
     `;
@@ -942,7 +961,6 @@ function main()
 
     gl.uniform3fv(uLightConstant, [1.0, 1.0, 1.0]);
     gl.uniform1f(uAmbientIntensity, 0.133);
-    gl.uniform3fv(uLightPosition, [0.0, 0.0, 2.0]);
     gl.uniform3fv(uViewerPosition, camera);
 
     glMatrix.mat4.lookAt(view, camera, [camera[0], camera[1], -10.0], [0.0, 1.0, 0.0]);
@@ -1007,11 +1025,11 @@ function main()
     
             if (!maju)
             {
-                dz -= speed;    
+                dz += speed;    
             }
             if (!mundur)
             {
-                dz += speed;    
+                dz -= speed;    
             }
             if (!kiri)
             {
@@ -1022,11 +1040,14 @@ function main()
                 dx += speed;    
             }
 
+
             var model = glMatrix.mat4.create();
             var cube = glMatrix.mat4.create();
             glMatrix.mat4.translate(
                 cube, cube, [dx, 0.0, dz]
             );
+            gl.uniform3fv(uLightPosition, [dx - 1.25 + (distance * 2), 0.0, -1 * dz]);
+
 
             var normalModel = glMatrix.mat3.create();
             glMatrix.mat3.normalFromMat4(normalModel, model);
