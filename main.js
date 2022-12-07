@@ -1,3 +1,23 @@
+function sendUpperBy(vertices, up)
+{
+    for (let i = 0; i < vertices.length; i++) {
+        if (i % 9 == 1)
+        {
+            vertices[i] += up;
+        }
+    } 
+}
+
+function sendLeftBy(vertices, left)
+{
+    for (let i = 0; i < vertices.length; i++) {
+        if (i % 9 == 0)
+        {
+            vertices[i] -= left;
+        }
+    } 
+}
+
 function main() 
 {
     var kanvas = document.getElementById("kanvas");
@@ -608,6 +628,36 @@ function main()
         -0.655, -0.8, 0.85,     64/255, 123/255, 250/255,   0, 1, 0,    // Index 10 - 414
         -0.675, -0.75, 0.85,    64/255, 123/255, 250/255,   0, 1, 0,    // Index 11 - 415
         
+        // Face A       // Red      // Surface orientation
+        -1,  -1, -1,     1, 0, 0,    0, 0, -1,    // Index:  0    
+        -0.2, -1, -1,     1, 0, 0,    0, 0, -1,    // Index:  1
+        -0.2, -0.2, -1,     1, 0, 0,    0, 0, -1,    // Index:  2
+        -1,  -0.2, -1,     1, 0, 0,    0, 0, -1,    // Index:  3
+        // Face B       // Yellow
+        -1, -1,  -0.2,     1, 1, 0,    0, 0, 1,     // Index:  4
+        -0.2, -1,  -0.2,     1, 1, 0,    0, 0, 1,     // Index:  5
+        -0.2,  -0.2,  -0.2,     1, 1, 0,    0, 0, 1,     // Index:  6
+        -1,  -0.2,  -0.2,     1, 1, 0,    0, 0, 1,     // Index:  7
+        // Face C       // Green
+        -1, -1, -1,     0, 1, 0,    -1, 0, 0,    // Index:  8
+        -1,  -0.2, -1,     0, 1, 0,    -1, 0, 0,    // Index:  9
+        -1,  -0.2,  -0.2,     0, 1, 0,    -1, 0, 0,    // Index: 10
+        -1, -1,  -0.2,     0, 1, 0,    -1, 0, 0,    // Index: 11
+        // Face D       // Blue
+        -0.2, -1, -1,     0, 0, 1,    1, 0, 0,     // Index: 12
+        -0.2,  -0.2, -1,     0, 0, 1,    1, 0, 0,     // Index: 13
+        -0.2,  -0.2,  -0.2,     0, 0, 1,    1, 0, 0,     // Index: 14
+        -0.2, -1,  -0.2,     0, 0, 1,    1, 0, 0,     // Index: 15
+        // Face E       // Orange
+        -1, -1, -1,     1, 0.5, 0,  0, -1, 0,    // Index: 16
+        -1, -1,  -0.2,     1, 0.5, 0,  0, -1, 0,    // Index: 17
+        -0.2, -1,  -0.2,     1, 0.5, 0,  0, -1, 0,    // Index: 18
+        -0.2, -1, -1,     1, 0.5, 0,  0, -1, 0,    // Index: 19
+        // Face F       // White
+        -1,  -0.2, -1,     1, 1, 1,    0, 1, 0,     // Index: 20
+        -1,  -0.2,  -0.2,     1, 1, 1,    0, 1, 0,     // Index: 21
+        -0.2,  -0.2,  -0.2,     1, 1, 1,    0, 1, 0,     // Index: 22
+        -0.2,  -0.2, -1,     1, 1, 1,    0, 1, 0      // Index: 23
     ];
 
     var indices = [
@@ -713,7 +763,18 @@ function main()
         400, 401, 402, 401, 402, 403,
         405, 406, 408, 406, 408, 409, 404, 405, 407, 405, 407, 408,
         410, 411, 413, 411, 413, 414, 411, 412, 414, 412, 414, 415,  
+
+        0+416, 1+416, 2+416,     0+416, 2+416, 3+416,     // Face A
+        4+416, 5+416, 6+416,     4+416, 6+416, 7+416,     // Face B
+        8+416, 9+416, 10+416,    8+416, 10+416, 11+416,   // Face C
+        12+416, 13+416, 14+416,  12+416, 14+416, 15+416,  // Face D
+        16+416, 17+416, 18+416,  16+416, 18+416, 19+416,  // Face E
+        20+416, 21+416, 22+416,  20+416, 22+416, 23+416,   // Face F
     ];
+
+    // readjusting the position
+    sendUpperBy(vertices, 0.125);
+    sendLeftBy(vertices, 1.25);
 
     // pindahin vertices ke GPU dari CPU
     var buffer = gl.createBuffer();
@@ -737,6 +798,7 @@ function main()
     attribute vec3 aNormal;
 
     uniform mat4 uModel;
+    uniform mat4 uCube;
     uniform mat4 uView;
     uniform mat4 uProjection;
 
@@ -748,6 +810,13 @@ function main()
 
     void main()
     {
+        if (uModelID > 1.0){
+            if(uModelID < 2.9)
+                gl_Position = uProjection * uView * uCube * vec4(aPosition.x + (${distance} * uModelID), aPosition.y, aPosition.z, 1.0);
+            else 
+                gl_Position = uProjection * uView * uModel * vec4(aPosition.x + (${distance} * uModelID), aPosition.y, aPosition.z, 1.0);
+        }
+        else 
             gl_Position = uProjection * uView * uModel * vec4(aPosition.x + (${distance} * uModelID), aPosition.y, aPosition.z, 1.0);
 
 
@@ -820,11 +889,12 @@ function main()
     // Variabel lokal
     var theta = 0.0;
     var dx = 0.0;
-    var dy = 0.0;
+    var dz = 0.0;
     var freeze = true;
 
     // Variabel pointer ke GLSL
     var uModel = gl.getUniformLocation(shaderProgram, "uModel");
+    var uCube = gl.getUniformLocation(shaderProgram, "uCube");
 
     // View
     var camera = [0.0, 0.0, 5.0];
@@ -875,6 +945,8 @@ function main()
     gl.uniform3fv(uLightPosition, [0.0, 0.0, 2.0]);
     gl.uniform3fv(uViewerPosition, camera);
 
+    glMatrix.mat4.lookAt(view, camera, [camera[0], camera[1], -10.0], [0.0, 1.0, 0.0]);
+
     // Grafika interaktif
     // Tetikus
     function onMouseClick(event)
@@ -883,34 +955,42 @@ function main()
     }
     document.addEventListener("click", onMouseClick);
 
+    var speed = 0.05;
+
+    var maju = false;
+    var mundur = false;
+    var kiri = false;
+    var kanan = false;
     // Papan ketuk
     function onKeyDown(event)
-    {
-        if (event.keyCode == 32) freeze = !freeze;
-        if (event.keyCode == 68) dx += 0.1;
-        if (event.keyCode == 65) dx -= 0.1;
-        if (event.keyCode == 87) dy += 0.1;
-        if (event.keyCode == 83) dy -= 0.1;
-        
-        // Pergerakan kamera berdasarkan panah pada papan ketuk
-        // Horizontal
-        if (event.keyCode == 37) {  // kiri
-            camera[0] -= 0.1;
-        } else if (event.keyCode == 39) {   // kanan
-            camera[0] += 0.1;
+    {   
+        if (event.keyCode == 73) {  // maju (I)
+            maju = true;
+        } 
+        else if (event.keyCode == 75) {   // mundur (K)
+            mundur = true;
         }
-        // Vertikal
-        if (event.keyCode == 38) {  // atas
-            camera[1] -= 0.1;
-        } else if (event.keyCode == 40) {   // bawah
-            camera[1] += 0.1;
+        else if (event.keyCode == 74) {  // kiri (J)
+            kiri = true;
+        } 
+        else if (event.keyCode == 76) {   // kanan (L)
+            kanan = true;
         }
-        gl.uniform3fv(uViewerPosition, camera);
-        glMatrix.mat4.lookAt(view, camera, [camera[0], camera[1], -10.0], [0.0, 1.0, 0.0]);
     }
     function onKeyUp(event)
     {
-        // if (event.keyCode == 32) freeze = false;
+        if (event.keyCode == 73) {  // maju (I)
+            maju = false;
+        } 
+        else if (event.keyCode == 75) {   // mundur (K)
+            mundur = false;
+        }
+        else if (event.keyCode == 74) {  // kiri (J)
+            kiri = false;
+        } 
+        else if (event.keyCode == 76) {   // kanan (L)
+            kanan = false;
+        }
     }
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener("keyup", onKeyUp);
@@ -925,37 +1005,54 @@ function main()
             gl.clearColor(0, 0, 0, 1.0); // values of red, green, blue, alpha
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     
-            if (!freeze)
+            if (!maju)
             {
-                theta -= 0.05;    
+                dz -= speed;    
+            }
+            if (!mundur)
+            {
+                dz += speed;    
+            }
+            if (!kiri)
+            {
+                dx -= speed;    
+            }
+            if (!kanan)
+            {
+                dx += speed;    
             }
 
             var model = glMatrix.mat4.create();
+            var cube = glMatrix.mat4.create();
             glMatrix.mat4.translate(
-                model, model, [dx, dy, 0.0]
-            );
-            glMatrix.mat4.rotateX(
-                model, model, theta
-            );
-            glMatrix.mat4.rotateY(
-                model, model, theta
-            );
-            glMatrix.mat4.rotateZ(
-                model, model, theta
+                cube, cube, [dx, 0.0, dz]
             );
 
             var normalModel = glMatrix.mat3.create();
             glMatrix.mat3.normalFromMat4(normalModel, model);
 
             gl.uniformMatrix4fv(uModel, false, model);
+            gl.uniformMatrix4fv(uCube, false, cube);
             gl.uniformMatrix4fv(uView, false, view);
             gl.uniformMatrix4fv(uProjection, false, perspective);    
             gl.uniformMatrix3fv(uNormalModel, false, normalModel);
 
-            for (let index = 2; index > 0; index--) {
+            for (let index = 1; index < 4; index++) {
                 gl.uniform1f(uModelID, index);
 
-                if(index == 2)
+                if(index == 1)
+                {
+                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 0);
+                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 240);
+                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 360);
+                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 600);
+                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 720);   
+                }
+                else if (index == 2)
+                {
+                    gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 1560);
+                }
+                else if (index == 3)
                 {
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 840);
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 960);
@@ -963,14 +1060,7 @@ function main()
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 1200);
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 1320);
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 1440);
-                }
-                else if (index == 1)
-                {
-                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 0);
-                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 240);
-                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 360);
-                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 600);
-                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 720);
+
                 }
             }
             
