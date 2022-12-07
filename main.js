@@ -797,30 +797,28 @@ function main()
 
     uniform mat4 uModel;
     uniform mat4 uModel1;
-    uniform mat4 uModel2;
     uniform mat4 uModel3;
-    uniform mat4 uModel4;
 
     uniform mat4 uView;
     uniform mat4 uProjection;
 
     uniform float digitPosition;
-    uniform bool digitType;
-    uniform bool isLeft;
 
     varying vec3 vColor; 
 
     void main()
     {
-        if(digitType)
+        if(digitPosition > 1.5) // cube
         {
-            if(isLeft) gl_Position = uProjection * uView * uModel1 * vec4(aPosition.x + (${distance} * digitPosition), aPosition.y, aPosition.z, 1.0);
-            else gl_Position = uProjection * uView * uModel2 * vec4(aPosition.x + (${distance} * digitPosition), aPosition.y, aPosition.z, 1.0);
+            gl_Position = uProjection * uView * uModel * vec4(aPosition.x - 0.9, aPosition.y, aPosition.z, 1.0);
         }
-        else
+        else if(digitPosition > 0.5) // huruf
         {
-            if(isLeft) gl_Position = uProjection * uView * uModel3 * vec4(aPosition.x + (${distance} * digitPosition), aPosition.y, aPosition.z, 1.0);
-            else gl_Position = uProjection * uView * uModel4 * vec4(aPosition.x + (${distance} * digitPosition), aPosition.y, aPosition.z, 1.0);
+            gl_Position = uProjection * uView * uModel3 * vec4(aPosition.x + (${distance} * digitPosition), aPosition.y, aPosition.z, 1.0);
+        }
+        else if(digitPosition > 0.0) // angka
+        {
+            gl_Position = uProjection * uView * uModel1 * vec4(aPosition.x + (${distance} * digitPosition), aPosition.y, aPosition.z, 1.0);
         }
         
         vColor = aColor;
@@ -861,28 +859,14 @@ function main()
     var horizontalDirection = 1;
     var horizontalDelta = 0.0;
 
-    var scaleSpeed = 0.01;
-    var scaleDirection = 1;
-    var scaleDelta = 1;
-
     var thetaY = 0.0;
     var enableYRight = false;
     var enableYLeft = false;
 
-    var thetaX = 0.0;
-    var enableXUp = false;
-    var enableXDown = false;
-
-    
-    
-
-
     // Variabel pointer ke GLSL
     var uModel = gl.getUniformLocation(shaderProgram, "uModel");
     var uModel1 = gl.getUniformLocation(shaderProgram, "uModel1");
-    var uModel2 = gl.getUniformLocation(shaderProgram, "uModel2");
     var uModel3 = gl.getUniformLocation(shaderProgram, "uModel3");
-    var uModel4 = gl.getUniformLocation(shaderProgram, "uModel4");
 
     // View
     var cameraX = 0.0;
@@ -965,18 +949,6 @@ function main()
                 else horizontalDirection = 1;
             }
 
-            // Digit 2
-            if(scaleDirection == 1)
-            {
-                if(scaleDelta >= 2) scaleDirection = -1;
-                else scaleDelta += scaleSpeed;
-            }
-            else 
-            {
-                if(scaleDelta <= 0.5) scaleDirection = 1;
-                else scaleDelta -= scaleSpeed;
-            }
-
             // Digit 3
             if (enableYRight)
             {
@@ -988,50 +960,27 @@ function main()
                 thetaY -= 0.1;
             }
 
-            // Digit 4
-            if (enableXUp)
-            {
-                thetaX += 0.1;
-            }
-            
-            if (enableXDown)
-            {
-                thetaX -= 0.1;
-            }
-
             var model = glMatrix.mat4.create(); // Membuat matriks identitas
             var model1 = glMatrix.mat4.create(); // Membuat matriks identitas
-            var model2 = glMatrix.mat4.create(); // Membuat matriks identitas
             var model3 = glMatrix.mat4.create(); // Membuat matriks identitas
-            var model4 = glMatrix.mat4.create(); // Membuat matriks identitas
 
             glMatrix.mat4.translate(
                 model1, model1, [horizontalDelta, 0.0, 0.0]
             );
-            glMatrix.mat4.scale(
-                model2, model2, [scaleDelta, scaleDelta, scaleDelta]
-            );
             glMatrix.mat4.rotateY(
                 model3, model3, thetaY
             );
-            glMatrix.mat4.rotateX(
-                model4, model4, thetaX
-            );
             gl.uniformMatrix4fv(uModel, false, model);
             gl.uniformMatrix4fv(uModel1, false, model1); 
-            gl.uniformMatrix4fv(uModel2, false, model2);
             gl.uniformMatrix4fv(uModel3, false, model3); 
-            gl.uniformMatrix4fv(uModel4, false, model4); 
 
             gl.uniformMatrix4fv(uView, false, view);
             gl.uniformMatrix4fv(uProjection, false, perspective);
 
-            for(let i = 0; i < 4; i++) {
+            for(let i = 0; i < 3; i++) {
                 gl.uniform1f(digitPosition, i);
-                gl.uniform1f(digitType, (i < 2) ? true : false);
-                gl.uniform1f(isLeft, (i % 2 == 0) ? true : false);
 
-                if(i == 0 || i == 1) 
+                if(i == 0) 
                 {
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 0);
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 240);
@@ -1039,26 +988,23 @@ function main()
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 600);
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 720);
                 }
-                else if(i == 2)
+                else if(i == 1)
                 {
-                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 840);
-                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 960);
-                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 1080);
-                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 1200);
-
-                }
-                else {
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 840);
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 960);
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 1080);
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 1200);
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 1320);
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 1440);
+
+                }
+                else {
+                    gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 1500);
                 }
                 
 
             }
-            gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 1500);
+            
              // kecepatannya sama seperti clockspeed cpu
             render();
         }, 1000/60); // 60 fps
