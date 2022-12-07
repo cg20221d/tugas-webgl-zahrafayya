@@ -1,27 +1,12 @@
-function sendUpperBy(vertices, up)
-{
-    for (let i = 0; i < vertices.length; i++) {
-        if (i % 6 == 1)
-        {
-            vertices[i] += up;
-        }
-    } 
-}
-
-function sendLeftBy(vertices, left)
-{
-    for (let i = 0; i < vertices.length; i++) {
-        if (i % 6 == 0)
-        {
-            vertices[i] -= left;
-        }
-    } 
-}
-
 function main() 
 {
     var kanvas = document.getElementById("kanvas");
+
+    // gl itu seperti kuas, cat, palet, dan alat-alat lainnya untuk menggambar
     var gl = kanvas.getContext("webgl");
+
+    // jarak tiap digit
+    var distance = 0.9;
 
     var vertices = [
         // top horizontal bit Face A
@@ -622,48 +607,17 @@ function main()
         -0.675, -0.85, 0.85,    64/255, 123/255, 250/255,   0, 1, 0,    // Index 9 - 413
         -0.655, -0.8, 0.85,     64/255, 123/255, 250/255,   0, 1, 0,    // Index 10 - 414
         -0.675, -0.75, 0.85,    64/255, 123/255, 250/255,   0, 1, 0,    // Index 11 - 415
-
-        // Face A       // Red      // Surface orientation
-        -1, -1, -1,     1, 0, 0,    0, 0, -1,    // Index:  0    
-         1, -1, -1,     1, 0, 0,    0, 0, -1,    // Index:  1
-         1,  1, -1,     1, 0, 0,    0, 0, -1,    // Index:  2
-        -1,  1, -1,     1, 0, 0,    0, 0, -1,    // Index:  3
-        // Face B       // Yellow
-        -1, -1,  1,     1, 1, 0,    0, 0, 1,     // Index:  4
-         1, -1,  1,     1, 1, 0,    0, 0, 1,     // Index:  5
-         1,  1,  1,     1, 1, 0,    0, 0, 1,     // Index:  6
-        -1,  1,  1,     1, 1, 0,    0, 0, 1,     // Index:  7
-        // Face C       // Green
-        -1, -1, -1,     0, 1, 0,    -1, 0, 0,    // Index:  8
-        -1,  1, -1,     0, 1, 0,    -1, 0, 0,    // Index:  9
-        -1,  1,  1,     0, 1, 0,    -1, 0, 0,    // Index: 10
-        -1, -1,  1,     0, 1, 0,    -1, 0, 0,    // Index: 11
-        // Face D       // Blue
-         1, -1, -1,     0, 0, 1,    1, 0, 0,     // Index: 12
-         1,  1, -1,     0, 0, 1,    1, 0, 0,     // Index: 13
-         1,  1,  1,     0, 0, 1,    1, 0, 0,     // Index: 14
-         1, -1,  1,     0, 0, 1,    1, 0, 0,     // Index: 15
-        // Face E       // Orange
-        -1, -1, -1,     1, 0.5, 0,  0, -1, 0,    // Index: 16
-        -1, -1,  1,     1, 0.5, 0,  0, -1, 0,    // Index: 17
-         1, -1,  1,     1, 0.5, 0,  0, -1, 0,    // Index: 18
-         1, -1, -1,     1, 0.5, 0,  0, -1, 0,    // Index: 19
-        // Face F       // White
-        -1,  1, -1,     1, 1, 1,    0, 1, 0,     // Index: 20
-        -1,  1,  1,     1, 1, 1,    0, 1, 0,     // Index: 21
-         1,  1,  1,     1, 1, 1,    0, 1, 0,     // Index: 22
-         1,  1, -1,     1, 1, 1,    0, 1, 0      // Index: 23
+        
     ];
 
     var indices = [
-        // top horizontal bit
         0, 1, 2,    0, 2, 3,    0, 3, 5,    3, 4, 5,
         6, 7, 8,    6, 8, 9,    6, 9, 11,   9, 10, 11,  
         12, 13, 14, 13, 14, 15, 
         16, 17, 18, 17, 18, 19,
         21, 23, 24, 20, 21, 23, 21, 22, 24, 22, 24, 25,
-        26, 27, 29, 27, 29, 30, 27, 28, 31, 27, 30, 31,
-
+        26, 27, 29, 27, 29, 30, 27, 28, 31, 27, 30, 31,   
+        
         // top left vertical bit
         32, 33, 34, 32, 34, 35, 32, 35, 37, 35, 36, 37,  
         38, 39, 40, 38, 40, 41, 38, 41, 43, 41, 42, 43,
@@ -759,21 +713,7 @@ function main()
         400, 401, 402, 401, 402, 403,
         405, 406, 408, 406, 408, 409, 404, 405, 407, 405, 407, 408,
         410, 411, 413, 411, 413, 414, 411, 412, 414, 412, 414, 415,  
-
-        0+415, 1+415, 2+415,     0+415, 2+415, 3+415,     // Face A
-        4+415, 5+415, 6+415,     4+415, 6+415, 7+415,     // Face B
-        8+415, 9+415, 10+415,    8+415, 10+415, 11+415,   // Face C
-        12+415, 13+415, 14+415,  12+415, 14+415, 15+415,  // Face D
-        16+415, 17+415, 18+415,  16+415, 18+415, 19+415,  // Face E
-        20+415, 21+415, 22+415,  20+415, 22+415, 23+415  // Face F 
     ];
-
-    // readjusting the position
-    sendUpperBy(vertices, 0.125);
-    sendLeftBy(vertices, 0.4)
-
-    // jarak tiap digit
-    var distance = 0.9;
 
     // pindahin vertices ke GPU dari CPU
     var buffer = gl.createBuffer();
@@ -794,34 +734,26 @@ function main()
     `
     attribute vec3 aPosition;
     attribute vec3 aColor;
+    attribute vec3 aNormal;
 
     uniform mat4 uModel;
-    uniform mat4 uModel1;
-    uniform mat4 uModel3;
-
     uniform mat4 uView;
     uniform mat4 uProjection;
 
-    uniform float digitPosition;
-
+    uniform float uModelID;
+    
     varying vec3 vColor; 
+    varying vec3 vNormal;
+    varying vec3 vPosition;
 
     void main()
     {
-        if(digitPosition > 1.5) // cube
-        {
-            gl_Position = uProjection * uView * uModel * vec4(aPosition.x - 0.9, aPosition.y, aPosition.z, 1.0);
-        }
-        else if(digitPosition > 0.5) // huruf
-        {
-            gl_Position = uProjection * uView * uModel3 * vec4(aPosition.x + (${distance} * digitPosition), aPosition.y, aPosition.z, 1.0);
-        }
-        else if(digitPosition > 0.0) // angka
-        {
-            gl_Position = uProjection * uView * uModel1 * vec4(aPosition.x + (${distance} * digitPosition), aPosition.y, aPosition.z, 1.0);
-        }
-        
+            gl_Position = uProjection * uView * uModel * vec4(aPosition.x + (${distance} * uModelID), aPosition.y, aPosition.z, 1.0);
+
+
         vColor = aColor;
+        vNormal = aNormal;
+        vPosition = (uModel * vec4(aPosition, 1.0)).xyz;
     }
     `;
     var vertexShaderObject = gl.createShader(gl.VERTEX_SHADER);
@@ -832,10 +764,41 @@ function main()
     var fragmentShaderCode = `
     precision mediump float;
     varying vec3 vColor;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+
+    uniform vec3 uLightConstant;
+    uniform float uAmbientIntensity;
+    uniform mat3 uNormalModel;
+    uniform vec3 uLightPosition;    // Lokasi sumber cahaya
+    uniform vec3 uViewerPosition;       // titik lokasi mata atau kamera pengamat
+
     void main()
     {
-        gl_FragColor = vec4(vColor, 1.0);
+        vec3 ambient = uLightConstant * uAmbientIntensity;
+        vec3 lightRay = vPosition - uLightPosition;
 
+        vec3 normalizedLight = normalize(-lightRay);
+        vec3 normalizedNormal = normalize(uNormalModel * vNormal);
+        float cosTheta = dot(normalizedNormal, normalizedLight);
+        vec3 diffuse = vec3(0.0, 0.0, 0.0);
+        if (cosTheta > 0.0) {
+            float diffuseIntensity = cosTheta;
+            diffuse = uLightConstant * diffuseIntensity;
+        }
+
+        vec3 normalizedReflector = normalize(reflect(lightRay, normalizedNormal));
+        vec3 normalizedViewer = normalize(uViewerPosition - vPosition);
+        float cosPhi = dot(normalizedReflector, normalizedViewer);
+        vec3 specular = vec3(0.0, 0.0, 0.0);
+        if (cosPhi > 0.0) {
+            float shininessConstant = 100.0;    // batas minimum spesifikasi spekular untuk materi logam
+            float specularIntensity = pow(cosPhi, shininessConstant);
+            specular = uLightConstant * specularIntensity;
+        }
+
+        vec3 phong = ambient + diffuse + specular;
+        gl_FragColor = vec4(phong * vColor, 1.0);
     }
     `;
     var fragmentShaderObject = gl.createShader(gl.FRAGMENT_SHADER);
@@ -855,35 +818,29 @@ function main()
     gl.useProgram(shaderProgram);
 
     // Variabel lokal
-    var horizontalSpeed = 0.0133;
-    var horizontalDirection = 1;
-    var horizontalDelta = 0.0;
-
-    var thetaY = 0.0;
-    var enableYRight = false;
-    var enableYLeft = false;
+    var theta = 0.0;
+    var dx = 0.0;
+    var dy = 0.0;
+    var freeze = true;
 
     // Variabel pointer ke GLSL
     var uModel = gl.getUniformLocation(shaderProgram, "uModel");
-    var uModel1 = gl.getUniformLocation(shaderProgram, "uModel1");
-    var uModel3 = gl.getUniformLocation(shaderProgram, "uModel3");
 
     // View
-    var cameraX = 0.0;
-    var cameraZ = 7.5;
+    var camera = [0.0, 0.0, 5.0];
     var uView = gl.getUniformLocation(shaderProgram, "uView"); 
     var view = glMatrix.mat4.create();
     glMatrix.mat4.lookAt(
         view,
-        [cameraX, 0.0, cameraZ],
-        [cameraX, 0.0, -10],
+        camera,                         // lokasi mata atau kamera pengamat
+        [camera[0], 0.0, -10.0],        // titik ke mana kamera mengamat
         [0.0, 1.0, 0.0]
     );
 
     // Projection
     var uProjection = gl.getUniformLocation(shaderProgram, "uProjection");
     var perspective = glMatrix.mat4.create();
-    glMatrix.mat4.perspective(perspective, 5*Math.PI/12, 1.0, 0.5, 50.0);
+    glMatrix.mat4.perspective(perspective, 5*Math.PI/12, 1.0, 0.5, 10.0);
 
     // Mengajari GPU bagaimana cara mengoleksi nilai 
     // posisi dari ARRAY_BUFFER untuk setiap vertex
@@ -903,24 +860,57 @@ function main()
     var aNormal = gl.getAttribLocation(shaderProgram, "aNormal");
     gl.vertexAttribPointer(aNormal, 3, gl.FLOAT, false, 
         9 * Float32Array.BYTES_PER_ELEMENT, 
-        6 * Float32Array.BYTES_PER_ELEMENT); // mulai dari array elemen ke-3
+        6 * Float32Array.BYTES_PER_ELEMENT); // mulai dari array elemen ke-6
     gl.enableVertexAttribArray(aNormal);
 
+    // Untuk ambient light
+    var uLightConstant = gl.getUniformLocation(shaderProgram, "uLightConstant");
+    var uAmbientIntensity = gl.getUniformLocation(shaderProgram, "uAmbientIntensity");
+    var uLightPosition = gl.getUniformLocation(shaderProgram, "uLightPosition");
+    var uNormalModel = gl.getUniformLocation(shaderProgram, "uNormalModel");
+    var uViewerPosition = gl.getUniformLocation(shaderProgram, "uViewerPosition");
+
+    gl.uniform3fv(uLightConstant, [1.0, 1.0, 1.0]);
+    gl.uniform1f(uAmbientIntensity, 0.133);
+    gl.uniform3fv(uLightPosition, [0.0, 0.0, 2.0]);
+    gl.uniform3fv(uViewerPosition, camera);
+
     // Grafika interaktif
+    // Tetikus
+    function onMouseClick(event)
+    {
+        freeze = !freeze;
+    }
+    document.addEventListener("click", onMouseClick);
+
     // Papan ketuk
     function onKeyDown(event)
     {
-        if (event.keyCode == 39) enableYRight = true;
-        if (event.keyCode == 37) enableYLeft = true;
-        if (event.keyCode == 38) enableXUp = true;
-        if (event.keyCode == 40) enableXDown = true;
+        if (event.keyCode == 32) freeze = !freeze;
+        if (event.keyCode == 68) dx += 0.1;
+        if (event.keyCode == 65) dx -= 0.1;
+        if (event.keyCode == 87) dy += 0.1;
+        if (event.keyCode == 83) dy -= 0.1;
+        
+        // Pergerakan kamera berdasarkan panah pada papan ketuk
+        // Horizontal
+        if (event.keyCode == 37) {  // kiri
+            camera[0] -= 0.1;
+        } else if (event.keyCode == 39) {   // kanan
+            camera[0] += 0.1;
+        }
+        // Vertikal
+        if (event.keyCode == 38) {  // atas
+            camera[1] -= 0.1;
+        } else if (event.keyCode == 40) {   // bawah
+            camera[1] += 0.1;
+        }
+        gl.uniform3fv(uViewerPosition, camera);
+        glMatrix.mat4.lookAt(view, camera, [camera[0], camera[1], -10.0], [0.0, 1.0, 0.0]);
     }
     function onKeyUp(event)
     {
-        if (event.keyCode == 39) enableYRight = false;
-        if (event.keyCode == 37) enableYLeft = false;
-        if (event.keyCode == 38) enableXUp = false;
-        if (event.keyCode == 40) enableXDown = false;
+        // if (event.keyCode == 32) freeze = false;
     }
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener("keyup", onKeyUp);
@@ -929,66 +919,43 @@ function main()
     function render()
     {
         setTimeout(function(){
-            let digitPosition = gl.getUniformLocation(shaderProgram, "digitPosition");
-            let digitType = gl.getUniformLocation(shaderProgram, "digitType");
-            let isLeft = gl.getUniformLocation(shaderProgram, "isLeft");
+            let uModelID = gl.getUniformLocation(shaderProgram, "uModelID");
 
             gl.enable(gl.DEPTH_TEST);
-            gl.clearColor(0.0, 0.0, 0.0, 1.0);
+            gl.clearColor(0, 0, 0, 1.0); // values of red, green, blue, alpha
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-            // Digit 1
-            if(horizontalDirection == 1)
+    
+            if (!freeze)
             {
-                if(horizontalDelta < 4.15) horizontalDelta += horizontalSpeed;
-                else horizontalDirection = -1;
-            }
-            else 
-            {
-                if(horizontalDelta > -2.25) horizontalDelta -= horizontalSpeed;
-                else horizontalDirection = 1;
+                theta -= 0.05;    
             }
 
-            // Digit 3
-            if (enableYRight)
-            {
-                thetaY += 0.1;
-            }
-            
-            if (enableYLeft)
-            {
-                thetaY -= 0.1;
-            }
-
-            var model = glMatrix.mat4.create(); // Membuat matriks identitas
-            var model1 = glMatrix.mat4.create(); // Membuat matriks identitas
-            var model3 = glMatrix.mat4.create(); // Membuat matriks identitas
-
+            var model = glMatrix.mat4.create();
             glMatrix.mat4.translate(
-                model1, model1, [horizontalDelta, 0.0, 0.0]
+                model, model, [dx, dy, 0.0]
+            );
+            glMatrix.mat4.rotateX(
+                model, model, theta
             );
             glMatrix.mat4.rotateY(
-                model3, model3, thetaY
+                model, model, theta
             );
+            glMatrix.mat4.rotateZ(
+                model, model, theta
+            );
+
+            var normalModel = glMatrix.mat3.create();
+            glMatrix.mat3.normalFromMat4(normalModel, model);
+
             gl.uniformMatrix4fv(uModel, false, model);
-            gl.uniformMatrix4fv(uModel1, false, model1); 
-            gl.uniformMatrix4fv(uModel3, false, model3); 
-
             gl.uniformMatrix4fv(uView, false, view);
-            gl.uniformMatrix4fv(uProjection, false, perspective);
+            gl.uniformMatrix4fv(uProjection, false, perspective);    
+            gl.uniformMatrix3fv(uNormalModel, false, normalModel);
 
-            for(let i = 0; i < 3; i++) {
-                gl.uniform1f(digitPosition, i);
+            for (let index = 2; index > 0; index--) {
+                gl.uniform1f(uModelID, index);
 
-                if(i == 0) 
-                {
-                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 0);
-                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 240);
-                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 360);
-                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 600);
-                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 720);
-                }
-                else if(i == 1)
+                if(index == 2)
                 {
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 840);
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 960);
@@ -996,16 +963,18 @@ function main()
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 1200);
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 1320);
                     gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 1440);
-
                 }
-                else {
-                    gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 1500);
+                else if (index == 1)
+                {
+                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 0);
+                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 240);
+                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 360);
+                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 600);
+                    gl.drawElements(gl.TRIANGLES, 60, gl.UNSIGNED_SHORT, 720);
                 }
-                
-
             }
             
-             // kecepatannya sama seperti clockspeed cpu
+            // kecepatannya sama seperti clockspeed cpu
             render();
         }, 1000/60); // 60 fps
     }
